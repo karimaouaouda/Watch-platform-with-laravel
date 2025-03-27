@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\CodeStatus;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // dd(array_map( fn($case) => $case->value, CodeStatus::cases()));
     }
 }
