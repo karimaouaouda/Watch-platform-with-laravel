@@ -31,12 +31,12 @@ class LicenseController extends Controller
         $code = Code::where('device_id', $device_unique_id);
         if( $code->first() ){
             return Code::all()->filter(function($code) use ($licenseKey){
-                dd(Crypt::encrypt($licenseKey) == Crypt::decrypt($code->code));
+                dd(Crypt::encrypt($licenseKey), Crypt::decrypt($code->code));
                 return $licenseKey == Crypt::decrypt($code->code);
             })->first();
         }
         $code = Code::all()->filter(function($code) use ($licenseKey){
-            dd(Crypt::encrypt($licenseKey) == Crypt::decrypt($code->code));
+            dd($licenseKey, Crypt::decrypt($code->code));
             return $licenseKey == Crypt::decrypt($code->code);
         })->first();
         //update the code and set the device id to the current one
