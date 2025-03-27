@@ -28,15 +28,18 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::get('/video', function () {
-    return view('video');
-})->name('video');
+Route::get('/watch', function (\Illuminate\Http\Request $request) {
+    $film_id = $request->movie;
+    $film = \App\Models\Movie::findOrFail($film_id);
+    $film->generateSignedUrlForUser(auth()->user()->id);
+    return view('movies.watch', compact('film'));
+})->name('video')->middleware('auth');
 
 Route::get('/d/{key}', function($key){
     return Crypt::encrypt($key);
 });
 
 
-Route::get('video-src', [FilmController::class, 'streamVideo'])->name('videosrc');
+Route::get('video-src', [FilmController::class, 'streamVideo'])->name('video.src');
 
 require __DIR__.'/auth.php';
