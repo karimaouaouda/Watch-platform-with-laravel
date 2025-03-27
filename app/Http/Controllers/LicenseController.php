@@ -17,6 +17,8 @@ class LicenseController extends Controller
             return response()->json([
                 'code' => $request->license_key,
                 'device_id' => $request->device_unique_id,
+                'encrypted' => Crypt::encrypt($request->license_key),
+                'all_codes' => Code::all(),
                 'codes' => Code::where('code', Crypt::encrypt($request->license_key))->get()
             ]);
         }
