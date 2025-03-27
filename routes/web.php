@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/watch', function (\Illuminate\Http\Request $request) {
     $film_id = $request->movie;
     $film = \App\Models\Movie::findOrFail($film_id);
-    $film->generateSignedUrlForUser(auth()->user()->id);
+    $film_src = $film->generateSignedUrlForUser(auth()->user()->id);
     return view('movies.watch', compact('film'));
 })->name('video')->middleware('auth');
 
