@@ -28,7 +28,7 @@ class LicenseController extends Controller
 
     public function getLicense($licenseKey, $device_unique_id){
         //check if the device id already exists
-        $code = Code::where('device_unique_id', $device_unique_id);
+        $code = Code::where('device_id', $device_unique_id);
         if( $code->first() ){
             return $code->where('license_key', Crypt::encrypt($licenseKey))->first();
         }
