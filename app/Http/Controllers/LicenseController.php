@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Crypt;
 class LicenseController extends Controller
 {
     public function check(Request $request){
+        // get the inputs
         $licenseKey = $request->license_key;
         $device_unique_id = $request->device_unique_id;
 
+        // check if the license key is valid
         $license = $this->getLicense($licenseKey, $device_unique_id);
         
         if(!$license){
@@ -27,19 +29,23 @@ class LicenseController extends Controller
     }
 
     public function getLicense($licenseKey, $device_unique_id){
-        //check if the device id already exists
-        $code = Code::where('device_id', $device_unique_id);
-        if( $code->first() ){
-            return Code::all()->filter(function($code) use ($licenseKey){
-                return $licenseKey == Crypt::decrypt($code->code);
-            })->first();
-        }
         $code = Code::all()->filter(function($code) use ($licenseKey){
             return $licenseKey == Crypt::decrypt($code->code);
         })->first();
-        //update the code and set the device id to the current one
-        $code->device_id = $device_unique_id;
-        $code->save();
+        if(!$code->first()){
+            return null;
+        }
+
+        if($code->device_id == null){
+            $code->device_id = $device_unique_id;
+            $code->save();
+            return $code;
+        }
+
+        //check if the device id already exists
+        if($code->device_id != $device_unique_id){
+            return null;
+        }
         return $code;
     }
 }

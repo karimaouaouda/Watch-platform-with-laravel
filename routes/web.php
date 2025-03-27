@@ -5,6 +5,7 @@ use App\Livewire\Codes;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -31,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/watch', function (\Illuminate\Http\Request $request) {
     $film_id = $request->movie;
     $film = \App\Models\Movie::findOrFail($film_id);
-    $film_src = $film->generateSignedUrlForUser(auth()->user()->id);
+    $film_src = $film->generateSignedUrlForUser(Auth::id());
     return view('movies.watch', compact('film'));
 })->name('video')->middleware('auth');
 
