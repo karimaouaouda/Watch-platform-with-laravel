@@ -30,9 +30,9 @@ class LicenseController extends Controller
         //check if the device id already exists
         $code = Code::where('device_id', $device_unique_id);
         if( $code->first() ){
-            return $code->where('license_key', Crypt::encrypt($licenseKey))->first();
+            return $code->where('code', Crypt::encrypt($licenseKey))->first();
         }
-        $code = Code::where('license_key', Crypt::encrypt($licenseKey))->first();
+        $code = Code::where('code', Crypt::encrypt($licenseKey))->first();
 
         //update the code and set the device id to the current one
         $code->device_id = $device_unique_id;
