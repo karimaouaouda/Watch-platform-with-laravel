@@ -12,17 +12,6 @@ class LicenseController extends Controller
         $licenseKey = $request->license_key;
         $device_unique_id = $request->device_unique_id;
 
-
-        if( $request->has('preview') ){
-            return response()->json([
-                'code' => $request->license_key,
-                'device_id' => $request->device_unique_id,
-                'encrypted' => Crypt::encrypt($request->license_key),
-                'all_codes' => Code::all(),
-                'codes' => Code::where('code', Crypt::encrypt($request->license_key))->get()
-            ]);
-        }
-
         $license = $this->getLicense($licenseKey, $device_unique_id);
         
         if(!$license){
@@ -43,8 +32,9 @@ class LicenseController extends Controller
         if( $code->first() ){
             return $code->where('code', Crypt::encrypt($licenseKey))->first();
         }
-        $code = Code::where('code', Crypt::encrypt($licenseKey))->first();
-
+        $code = Code::all()->filter(function($code) use ($licenseKey){
+            return $licenseKey == Crypt::decrypt($code->code);
+        })->first();
         //update the code and set the device id to the current one
         $code->device_id = $device_unique_id;
         $code->save();
