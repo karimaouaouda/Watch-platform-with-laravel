@@ -12,6 +12,15 @@ class LicenseController extends Controller
         $licenseKey = $request->license_key;
         $device_unique_id = $request->device_unique_id;
 
+
+        if( $request->has('preview') ){
+            return response()->json([
+                'code' => $request->license_key,
+                'device_id' => $request->device_unique_id,
+                'codes' => Code::all()
+            ]);
+        }
+
         $license = $this->getLicense($licenseKey, $device_unique_id);
         
         if(!$license){
