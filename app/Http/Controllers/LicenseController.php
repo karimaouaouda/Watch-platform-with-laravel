@@ -31,6 +31,7 @@ class LicenseController extends Controller
         $code = Code::where('device_id', $device_unique_id);
         if( $code->first() ){
             return Code::all()->filter(function($code) use ($licenseKey){
+                dd($licenseKey, Crypt::decrypt($code->code));
                 return $licenseKey == Crypt::decrypt($code->code);
             })->first();
         }
