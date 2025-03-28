@@ -13,4 +13,9 @@ class Series extends Model
         'rating',
         'poster_url',
     ];
+
+
+    public function seasons(){
+        return $this->hasMany(Season::class);
+    }
 }

@@ -14,4 +14,9 @@ class Episode extends Model
         'url',
         'poster_url'
     ];
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
+    }
 }
