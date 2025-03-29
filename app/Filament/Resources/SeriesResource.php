@@ -90,11 +90,14 @@ class SeriesResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('Seasons')
+                        ->icon('heroicon-o-squares-2x2')
                         ->url(fn($record) => route('filament.admin.resources.series.seasons', $record)),
+                    Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+
                 ])
             ])
             ->bulkActions([
