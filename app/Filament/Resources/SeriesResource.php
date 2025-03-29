@@ -73,20 +73,24 @@ class SeriesResource extends Resource
                     ->tooltip(fn($state) => $state),
                 TextColumn::make('release_date')
                     ->badge()
+                    ->date()
                     ->color(Color::Blue),
                 TextColumn::make('created_at')
                     ->badge()
+                    ->date()
                     ->color(Color::Green),
                 TextColumn::make('seasons_count')
+                    ->label('Seasons')
                     ->default('0')
                     ->formatStateUsing(function($state){
                         return $state;
                     })->badge(),
                     TextColumn::make('episodes_count')
-                    ->default('0')
-                    ->formatStateUsing(function($state){
-                        return $state;
-                    })->badge()
+                        ->label('Episodes')
+                        ->default('0')
+                        ->formatStateUsing(function($state){
+                            return $state;
+                        })->badge()
             ])
             ->filters([
                 //
