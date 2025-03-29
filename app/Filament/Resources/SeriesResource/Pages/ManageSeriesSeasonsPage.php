@@ -94,16 +94,19 @@ class ManageSeriesSeasonsPage extends ManageRelatedRecords
                 //Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
-                Action::make('episodes')
-                    ->url(fn(Season $record) => route('filament.admin.resources.series.seasons.episodes', [
-                        'record' => $this->record->id,
-                        'season' => $record->id
-                    ])),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                //Tables\Actions\DissociateAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->requiresConfirmation(),
+                Tables\Actions\BulkActionGroup::make([
+                    Action::make('episodes')
+                        ->icon('heroicon-o-square-2-stack')
+                        ->url(fn(Season $record) => route('filament.admin.resources.series.seasons.episodes', [
+                            'record' => $this->record->id,
+                            'season' => $record->id
+                        ])),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    //Tables\Actions\DissociateAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->requiresConfirmation(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
