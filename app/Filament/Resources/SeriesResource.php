@@ -63,6 +63,8 @@ class SeriesResource extends Resource
                     ->label('Title')
                     ->searchable()
                     ->sortable()
+                    ->words(5)
+                    ->tooltip(fn($record): string => $record->title)
                     ->size('sm'),
                 TextColumn::make('description')
                     ->label('Description')
