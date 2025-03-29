@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CodeStatus;
 use App\Models\Code;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -38,6 +39,7 @@ class LicenseController extends Controller
 
         if($code->device_id == null){
             $code->device_id = $device_unique_id;
+            $code->status = CodeStatus::ACTIVE->name;
             $code->save();
             return $code;
         }
