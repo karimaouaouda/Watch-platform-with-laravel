@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\CodeDuration;
 use App\Enums\CodeStatus;
 use App\Filament\Resources\CodeResource\Pages;
-use App\Filament\Resources\CodeResource\RelationManagers;
 use App\Models\Code;
 use Exception;
 use Filament\Forms;
@@ -67,6 +66,16 @@ class CodeResource extends Resource
                     }),
 
                 TextColumn::make('status')
+                    ->tooltip(function(Code $record){
+                        if( $record->status == CodeStatus::ACTIVE->name ){
+                            return sprintf(
+                                "used from device id : %d",
+                                $record->device_id
+                            );
+                        }
+
+                        return null;
+                    })
                     ->badge()
                     ->color(fn ($state) => match ($state) {
                         CodeStatus::UNUSED->name => Color::Blue,
@@ -106,7 +115,7 @@ class CodeResource extends Resource
                                 ->send();
                         }
 
-                        
+
                     })
             ])
             ->bulkActions([
