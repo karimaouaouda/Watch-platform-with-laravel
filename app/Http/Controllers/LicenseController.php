@@ -38,7 +38,6 @@ class LicenseController extends Controller
         }
 
         if($code->device_id == null){
-            dd($code->device_id, $device_unique_id);
             $code->device_id = $device_unique_id;
             $code->status = CodeStatus::ACTIVE->name;
             $code->save();
