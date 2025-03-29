@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SeriesResource\Pages;
 
+use AllowDynamicProperties;
 use App\Filament\Resources\SeriesResource;
 use App\Models\Episode;
 use App\Models\Season;
@@ -16,7 +17,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
-class CreateSeriesEpisodePage extends CreateRecord
+#[AllowDynamicProperties] class CreateSeriesEpisodePage extends CreateRecord
 {
     protected static string $resource = SeriesResource::class;
 
@@ -27,6 +28,7 @@ class CreateSeriesEpisodePage extends CreateRecord
 
     public function mount(): void
     {
+        $this->series_id = request('series');
         parent::mount();
     }
 
@@ -42,8 +44,9 @@ class CreateSeriesEpisodePage extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return ManageSeriesSeasonsPage::getUrl([
-            'record' => request('series')
+        return route(ManageSeriesEpisodesPage::getRouteName(), [
+            'record' => $this->series_id,
+            'season' => $this->season->id
         ]);
     }
 

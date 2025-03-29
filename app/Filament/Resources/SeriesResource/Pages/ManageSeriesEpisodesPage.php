@@ -5,6 +5,7 @@ namespace App\Filament\Resources\SeriesResource\Pages;
 use App\Filament\Resources\SeriesResource;
 use App\Models\Episode;
 use App\Models\Season;
+use App\Models\Series;
 use Filament\Actions;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRecords;
@@ -22,7 +23,9 @@ class ManageSeriesEpisodesPage extends ManageRecords
         return 'Episodes';
     }
 
+    protected static ?string $title = 'Episodes';
     public Season $season;
+    public Series $record;
 
     public function mount(): void
     {
@@ -31,6 +34,7 @@ class ManageSeriesEpisodesPage extends ManageRecords
         $this->loadDefaultActiveTab();
 
         $this->season = request('season');
+
     }
 
     protected function getTableQuery(): ?Builder
@@ -46,6 +50,18 @@ class ManageSeriesEpisodesPage extends ManageRecords
         });
     }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('create episode')
+                ->color(Color::Blue)
+                ->icon('heroicon-s-film')
+                ->url(route(
+                    CreateSeriesEpisodePage::getRouteName(),
+                    ['season' => $this->season->id, 'series' => $this->season->series()->first()->id]
+                )),
+        ];
+    }
 
 
     public function table(Table $table): Table
