@@ -22,7 +22,7 @@ you must provide the `license key` and the `device id` :
 ```json
 {
     "license_key" : "7A09B0BAED9A40BF96288B97B1CC66E8",
-    "device_id" : "<device_id>"
+    "device_unique_id" : "<device_id>"
 }
 ```
 
