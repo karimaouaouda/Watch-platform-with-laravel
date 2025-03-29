@@ -37,6 +37,20 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'series' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/series'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
+        'movies' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/movies'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
 
         'public' => [
             'driver' => 'local',

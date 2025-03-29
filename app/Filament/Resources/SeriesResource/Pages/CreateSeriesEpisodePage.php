@@ -4,7 +4,13 @@ namespace App\Filament\Resources\SeriesResource\Pages;
 
 use App\Filament\Resources\SeriesResource;
 use App\Models\Episode;
+use App\Models\Season;
 use Filament\Actions;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
@@ -14,13 +20,14 @@ class CreateSeriesEpisodePage extends CreateRecord
 {
     protected static string $resource = SeriesResource::class;
 
+
+    protected static ?string $title = 'Series Episode';
+
+    public Season $season;
+
     public function mount(): void
     {
-        dd(request('season'));
         parent::mount();
-
-        $this->record = request('season');
-
     }
 
     public function getModel(): string
@@ -33,11 +40,48 @@ class CreateSeriesEpisodePage extends CreateRecord
         return $this->getModel();
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return ManageSeriesSeasonsPage::getUrl([
+            'record' => request('series')
+        ]);
+    }
+
 
     public function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('title')
+            Section::make('episode information')
+                ->schema([
+                    Select::make('season_id')
+                        ->relationship('season', 'title')
+                        ->searchable()
+                        ->required()
+                        ->default($this->season->id),
+                    TextInput::make('title')
+                        ->required()
+                        ->minLength(10)
+                        ->maxLength(255)
+                        ->hint('make it short :)')
+                        ->prefixIcon('heroicon-s-film'),
+                    Textarea::make('description')
+                        ->required()
+                        ->minLength(10)
+                        ->maxLength(1000)
+                        ->label('description'),
+                    TextInput::make('episode_number')
+                        ->integer()
+                        ->minValue(1)
+                        ->maxValue(5000)
+                        ->required(),
+                    FileUpload::make('url')
+                        ->label('Episode')
+                        ->hint('file must be mp4/webm')
+                        ->disk('series')
+                        ->directory($this->season->directory)
+                        ->required()
+                        ->acceptedFileTypes(['video/mp4', 'video/webm']),
+                ])
         ]);
     }
 }

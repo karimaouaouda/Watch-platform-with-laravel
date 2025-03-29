@@ -25,4 +25,13 @@ class Season extends Model
     {
         return $this->hasMany(Episode::class);
     }
+
+    // attributes
+    public function getDirectoryAttribute(){
+        return sprintf(
+            "series_%s/season_%s/episodes",
+            $this->series()->first()->id,
+            $this->id,
+        );
+    }
 }

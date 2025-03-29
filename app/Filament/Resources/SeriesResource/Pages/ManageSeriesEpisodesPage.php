@@ -39,20 +39,18 @@ class ManageSeriesEpisodesPage extends ManageRecords
                             ->where('season_id', $this->season->id);
     }
 
+    protected function configureEditAction(Tables\Actions\EditAction $action): void
+    {
+        $action->form(function (Form $form) {
+            return $this->form($form->columns(2));
+        });
+    }
+
+
+
     public function table(Table $table): Table
     {
         return $table
-            ->emptyStateHeading('No Episodes Found')
-            ->emptyStateDescription('Add Episodes To See Them Here')
-            ->emptyStateActions([
-                Tables\Actions\Action::make('add episode')
-                    ->color(Color::Blue)
-                    ->icon('heroicon-s-film')
-                    ->url(route(
-                        CreateSeriesEpisodePage::getRouteName(),
-                        ['season' => $this->season->id, 'record' => $this->season->series()->first()->id]
-                    ))
-            ])
             ->recordTitleAttribute('episode_number')
             ->columns([
                 Tables\Columns\TextColumn::make('episode_number')
@@ -73,6 +71,25 @@ class ManageSeriesEpisodesPage extends ManageRecords
                     ->sortable()
                     ->searchable()
                     ->label('Release Date'),
+            ])
+            ->filters([])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('watch')
+                    ->icon('heroicon-o-eye')
+                    ->color(Color::Green)
+            ])
+            ->emptyStateHeading('No Episodes Found')
+            ->emptyStateDescription('Add Episodes To See Them Here')
+            ->emptyStateActions([
+                Tables\Actions\Action::make('add episode')
+                    ->color(Color::Blue)
+                    ->icon('heroicon-s-film')
+                    ->url(route(
+                        CreateSeriesEpisodePage::getRouteName(),
+                        ['season' => $this->season->id, 'series' => $this->season->series()->first()->id]
+                    )),
             ]);
     }
 }

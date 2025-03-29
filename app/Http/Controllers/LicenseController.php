@@ -15,7 +15,7 @@ class LicenseController extends Controller
 
         // check if the license key is valid
         $license = $this->getLicense($licenseKey, $device_unique_id);
-        
+
         if(!$license){
             return response()->json([
                 'status' => 'error',
@@ -46,6 +46,7 @@ class LicenseController extends Controller
         if($code->device_id != $device_unique_id){
             return null;
         }
+
         return $code;
     }
 }

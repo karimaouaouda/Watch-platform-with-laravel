@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SeriesResource\Pages;
-use App\Filament\Resources\SeriesResource\RelationManagers;
 use App\Models\Series;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -76,16 +75,16 @@ class SeriesResource extends Resource
                 TextColumn::make('created_at')
                     ->badge()
                     ->color(Color::Green),
-                TextColumn::make('seasons')
+                TextColumn::make('seasons_count')
                     ->default('0')
                     ->formatStateUsing(function($state){
                         return $state;
-                    }),
-                    TextColumn::make('episodes')
+                    })->badge(),
+                    TextColumn::make('episodes_count')
                     ->default('0')
                     ->formatStateUsing(function($state){
                         return $state;
-                    })
+                    })->badge()
             ])
             ->filters([
                 //
@@ -120,7 +119,7 @@ class SeriesResource extends Resource
             'edit' => Pages\EditSeries::route('/{record}/edit'),
             'seasons' => Pages\ManageSeriesSeasonsPage::route('/{record}/seasons'),
             'seasons.episodes' => Pages\ManageSeriesEpisodesPage::route('/{record}/seasons/{season}/episodes'),
-            'seasons.episodes.create' => Pages\CreateSeriesEpisodePage::route('/{record}/seasons/{season}/episodes/create'),
+            'seasons.episodes.create' => Pages\CreateSeriesEpisodePage::route('/{series}/seasons/{season}/episodes/create'),
         ];
     }
 }

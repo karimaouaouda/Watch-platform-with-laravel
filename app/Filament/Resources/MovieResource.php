@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MovieResource\Pages;
-use App\Filament\Resources\MovieResource\RelationManagers;
 use App\Models\Movie;
-use Dom\Text;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -46,10 +44,11 @@ class MovieResource extends Resource
                             ->label('Poster URL')
                             ->required()
                             ->placeholder('Enter the movie poster URL'),
-                        TextInput::make('url')
-                            ->label('URL')
+                        Forms\Components\FileUpload::make('url')
+                            ->disk('movies')
+                            ->directory('movies')
                             ->required()
-                            ->placeholder('Enter the movie URL'),
+                            ->acceptedFileTypes(['video/mp4', 'video/webm'])
                     ]),
             ]);
     }
