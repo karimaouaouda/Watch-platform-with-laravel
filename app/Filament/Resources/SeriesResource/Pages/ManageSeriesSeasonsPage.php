@@ -94,7 +94,7 @@ class ManageSeriesSeasonsPage extends ManageRelatedRecords
                 //Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
-                Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\ActionGroup::make([
                     Action::make('episodes')
                         ->icon('heroicon-o-square-2-stack')
                         ->url(fn(Season $record) => route('filament.admin.resources.series.seasons.episodes', [
